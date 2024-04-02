@@ -29,9 +29,11 @@
 
 def play_game():
   board = [
-    [".", ".", "."],
-    [".", ".", "."],
-    [".", ".", "."]
+    [".", ".", ".",".","."],
+    [".", ".", ".",".","."],
+    [".", ".", ".",".","."],
+    [".", ".", ".",".","."],
+    [".", ".", ".",".","."],
   ]
   player = "X"
   while not is_game_over(board):
@@ -42,12 +44,14 @@ def play_game():
     row = int(input("Enter a row: "))
     column = int(input("Enter a column: "))
     board = make_move(board, row, column, player)
+
     if player == "X":
       player = "O"
     else:
       player = "X"
   print(print_board(board))
   print("Game over!")
+
 
 def print_board(board):
   formatted_rows = []
@@ -57,8 +61,14 @@ def print_board(board):
   return grid
 
 def make_move(board, row, column, player):
-  board[row][column] = player
-  return board
+  if(board[row][column] == '.'):
+    board[row][column] = player
+    return board
+  else:
+    print('Invalid move: Pick an empty cell')
+    row = int(input("Enter a row: "))
+    column = int(input("Enter a column: "))
+    return make_move(board, row, column, player)
 
 
 # This function will extract three cells from the board
@@ -86,15 +96,57 @@ def are_all_cells_the_same(board, coord_1, coord_2, coord_3):
 groups_to_check = [
   # Rows
   [(0, 0), (0, 1), (0, 2)],
+  [(0, 1), (0, 2), (0, 3)],
+  [(0, 2), (0, 3), (0, 4)],
   [(1, 0), (1, 1), (1, 2)],
+  [(1, 1), (1, 2), (1, 3)],
+  [(1, 2), (1, 3), (1, 4)],
   [(2, 0), (2, 1), (2, 2)],
+  [(2, 1), (2, 2), (2, 3)],
+  [(2, 2), (2, 3), (2, 4)],
+  [(3, 0), (2, 1), (2, 2)],
+  [(3, 1), (3, 2), (3, 3)],
+  [(3, 2), (3, 3), (3, 4)],
+  [(4, 0), (4, 1), (4, 2)],
+  [(4, 1), (4, 2), (4, 3)],
+  [(4, 2), (4, 3), (4, 4)],
+
   # Columns
   [(0, 0), (1, 0), (2, 0)],
+  [(1, 0), (2, 0), (3, 0)],
+  [(2, 0), (3, 0), (4, 0)],
   [(0, 1), (1, 1), (2, 1)],
+  [(1, 1), (2, 1), (3, 1)],
+  [(2, 1), (3, 1), (4, 1)],
   [(0, 2), (1, 2), (2, 2)],
+  [(1, 2), (2, 2), (3, 2)],
+  [(2, 2), (3, 2), (4, 2)],
+  [(0, 3), (1, 3), (2, 3)],
+  [(1, 3), (2, 3), (3, 3)],
+  [(2, 3), (3, 3), (4, 3)],
+  [(0, 4), (1, 4), (2, 4)],
+  [(1, 4), (2, 4), (3, 4)],
+  [(2, 4), (3, 4), (4, 4)],
   # Diagonals
   [(0, 0), (1, 1), (2, 2)],
-  [(0, 2), (1, 1), (2, 0)]
+  [(1, 1), (2, 2), (3, 3)],
+  [(2, 2), (3, 3), (4, 4)],
+  [(0, 1), (1, 2), (2, 3)],
+  [(1, 2), (2, 3), (3, 4)],
+  [(0, 3), (1, 2), (2, 1)],
+  [(1, 2), (2, 1), (3, 0)],
+  [(1, 0), (2, 1), (3, 2)],
+  [(2, 1), (3, 2), (4, 3)],
+  [(3, 0), (2, 1), (1, 2)],
+  [(2, 1), (1, 2), (0, 3)],
+  [(4, 1), (3, 2), (2, 3)],
+  [(3, 2), (2, 3), (1, 4)],
+  [(4, 3), (3, 2), (2, 1)],
+  [(3, 2), (2, 1), (1, 0)],
+  
+  [(1, 3), (2, 2), (3, 1)],
+  [(2, 2), (3, 1), (4, 0)],
+
 ]
 
 def is_game_over(board):
@@ -106,6 +158,9 @@ def is_game_over(board):
       if are_all_cells_the_same(board, group[0], group[1], group[2]):
         return True # We found a winning row!
         # Note that return also stops the function
+  if '.' not in board[0] and '.' not in board[1] and '.' not in board[2] :
+    return True
+  
   return False # If we get here, we didn't find a winning row
 
 # And test it out:
